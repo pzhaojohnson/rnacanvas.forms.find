@@ -133,7 +133,10 @@ export class FindForm {
   refresh(): void {
     let motif = this.#motifField.value;
 
-    let parentSequence = [...this.#targetApp.drawing.bases];
+    let parentSequence = [...this.#targetApp.drawing.bases].map(b => ({
+      domNode: b.domNode,
+      textContent: b.textContent ?? '',
+    }));
 
     let options = {
       cutoff: this.#cutoffField.value,

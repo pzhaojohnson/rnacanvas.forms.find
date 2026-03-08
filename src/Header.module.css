@@ -1,0 +1,15 @@
+.header {
+  margin: 0px;
+  padding: 0px;
+
+  font-family: "Open Sans", sans-serif;
+  font-size: 31px;
+  font-weight: 700;
+  font-style: normal;
+  color: white;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  pointer-events: none;
+}

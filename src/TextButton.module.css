@@ -1,0 +1,43 @@
+.text-button {
+  position: relative;
+
+  align-self: start;
+
+  pointer-events: auto;
+}
+
+.text {
+  margin: 0px;
+  padding: 0px;
+
+  font-family: "Open Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  font-style: normal;
+  color: #10ffff;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  pointer-events: auto;
+
+  cursor: pointer;
+}
+
+.text-button:hover .text {
+  text-decoration: underline;
+}
+
+.disabled {
+  cursor: default;
+}
+
+.disabled .text {
+  pointer-events: none;
+
+  color: #097676;
+}
+
+.disabled:hover .text {
+  text-decoration: none;
+}

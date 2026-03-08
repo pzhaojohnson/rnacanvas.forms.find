@@ -1,6 +1,6 @@
 {
   "name": "@rnacanvas/forms.find",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The Find form",
   "repository": {
     "type": "git",
@@ -29,6 +29,13 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
+    "@rnacanvas/boxes": "^2.5.0",
+    "@rnacanvas/forms": "^2.1.0",
+    "@rnacanvas/math": "^1.20.1",
+    "@rnacanvas/search": "^4.0.0",
+    "@rnacanvas/tooltips": "^1.6.0",
+    "@rnacanvas/utilities": "^6.5.0",
+    "@rnacanvas/value-check": "^1.14.1",
     "jquery": "^4.0.0"
   }
 }

@@ -1,0 +1,19 @@
+.motif-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin: 0px 0px 4px 0px;
+  padding: 0px;
+
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  pointer-events: none;
+}

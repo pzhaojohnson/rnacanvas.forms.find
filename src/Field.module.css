@@ -1,0 +1,16 @@
+.field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  font-style: normal;
+  color: white;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  pointer-events: auto;
+}

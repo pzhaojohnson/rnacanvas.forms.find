@@ -1,0 +1,26 @@
+.text-input {
+  border-radius: 2px;
+
+  border: none;
+  outline: none;
+
+  padding: 3px 6px;
+
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  font-style: normal;
+  color: black;
+
+  background-color: white;
+
+  pointer-events: auto;
+}
+
+.text-input:focus {
+  outline: none;
+}
+
+.disabled {
+  pointer-events: none;
+}

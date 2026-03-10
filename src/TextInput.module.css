@@ -1,7 +1,7 @@
 .text-input {
   border-radius: 2px;
 
-  border: none;
+  border: 1px solid white;
   outline: none;
 
   padding: 3px 6px;
@@ -10,15 +10,19 @@
   font-size: 12px;
   font-weight: 700;
   font-style: normal;
-  color: black;
+  color: white;
 
-  background-color: white;
+  background-color: black;
 
   pointer-events: auto;
 }
 
 .text-input:focus {
   outline: none;
+
+  border-color: yellow;
+
+  color: yellow;
 }
 
 .disabled {

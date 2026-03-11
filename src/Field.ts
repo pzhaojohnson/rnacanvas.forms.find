@@ -22,4 +22,12 @@ export class Field {
 
     this.domNode.append(inputElement, this.#nameAnchor);
   }
+
+  get label() {
+    let setColor = (color: string) => this.#nameAnchor.style.color = color;
+
+    return {
+      setColor,
+    };
+  }
 }

@@ -9,6 +9,8 @@ export class MotifField {
 
   readonly #input = new TextInput();
 
+  onChange?: () => void;
+
   constructor() {
     this.domNode.classList.add(styles['motif-field']);
 
@@ -22,6 +24,10 @@ export class MotifField {
     this.#input.domNode.addEventListener('focus', () => this.#label.style.color = 'yellow');
     this.#input.domNode.addEventListener('blur', () => this.#label.style.color = '');
 
+    this.#input.domNode.oninput = () => {
+      this.onChange ? this.onChange() : {};
+    };
+
     this.domNode.append(this.#input.domNode);
   }
 
@@ -31,14 +37,8 @@ export class MotifField {
 
   set value(value) {
     this.#input.domNode.value = value;
-  }
 
-  get onChange() {
-    return this.#input.onChange;
-  }
-
-  set onChange(onChange) {
-    this.#input.onChange = onChange;
+    this.onChange ? this.onChange() : {};
   }
 
   disable(): void {

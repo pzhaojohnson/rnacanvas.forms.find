@@ -14,6 +14,8 @@ import { MotifField } from './MotifField';
 
 import { UseSelectedField } from './UseSelectedField';
 
+import { SectionToggle } from './SectionToggle';
+
 import { CutoffField } from './CutoffField';
 
 import { FindComplementsField } from './FindComplementsField';
@@ -44,6 +46,18 @@ export class FindForm {
   readonly #useSelectedField = new UseSelectedField();
 
   readonly #findComplementsField = new FindComplementsField();
+
+  readonly #optionFieldsToggle = new SectionToggle('Options', () => {
+    this.#optionFieldsContainer.style.display = (
+      this.#optionFieldsContainer.style.display == 'none' ? (
+        ''
+      ) : (
+        'none'
+      )
+    );
+  });
+
+  readonly #optionFieldsContainer = document.createElement('div');
 
   readonly #cutoffField = new CutoffField();
   readonly #mismatchPenaltyField = new MismatchPenaltyField();
@@ -88,12 +102,23 @@ export class FindForm {
 
     this.#contentContainer.append(this.#findComplementsField.domNode);
 
-    this.#contentContainer.append(
+    this.#optionFieldsToggle.domNode.style.marginTop = '23px';
+
+    this.#contentContainer.append(this.#optionFieldsToggle.domNode);
+
+    // option fields are shown by default
+    this.#optionFieldsToggle.caret.pointDown();
+
+    this.#optionFieldsContainer.style.margin = '8px 0px 0px 8px';
+
+    this.#optionFieldsContainer.append(
       this.#cutoffField.domNode,
       this.#mismatchPenaltyField.domNode,
       this.#gapPenaltyField.domNode,
       this.#wobblePenaltyField.domNode,
     );
+
+    this.#contentContainer.append(this.#optionFieldsContainer);
 
     this.#findComplementsField.onChange = () => {
       if (this.#findComplementsField.isChecked()) {

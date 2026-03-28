@@ -76,10 +76,7 @@ export class FindForm {
     // show the selected motif in the motif field when checked
     this.#useSelectedField.onChange = () => {
       if (this.#useSelectedField.isChecked()) {
-        this.#motifField.disable();
         this.#motifField.value = this.#selectedMotif;
-      } else {
-        this.#motifField.enable();
       }
     };
 

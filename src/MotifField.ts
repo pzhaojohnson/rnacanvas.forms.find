@@ -17,7 +17,10 @@ export class MotifField {
 
     this.domNode.append(this.#label);
 
-    this.#input.domNode.style.width = '200px';
+    this.#input.domNode.style.width = '225x';
+
+    this.#input.domNode.addEventListener('focus', () => this.#label.style.color = 'yellow');
+    this.#input.domNode.addEventListener('blur', () => this.#label.style.color = '');
 
     this.domNode.append(this.#input.domNode);
   }

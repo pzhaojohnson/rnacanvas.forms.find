@@ -1,9 +1,14 @@
 .hit-row {
   display: flex;
   flex-direction: row;
+  align-items: center;
 
   padding: 3px 4px;
   border-radius: 2px;
+
+  pointer-events: auto;
+
+  cursor: pointer;
 }
 
 .position {
@@ -42,7 +47,13 @@
   pointer-events: none;
 }
 
+.spacer {
+  flex-grow: 1;
+}
+
 .select-button {
+  margin-right: 8px;
+
   visibility: hidden;
   pointer-events: none;
 }
@@ -53,6 +64,8 @@
 }
 
 .add-to-selected-button {
+  margin-right: 2px;
+
   visibility: hidden;
   pointer-events: none;
 }

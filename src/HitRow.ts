@@ -11,6 +11,8 @@ export class HitRow {
 
   readonly #sequence = document.createElement('p');
 
+  readonly #spacer = document.createElement('div');
+
   readonly buttons = {
     'Select': new SelectButton(),
     'Add to Selected': new AddToSelectedButton(),
@@ -30,6 +32,10 @@ export class HitRow {
     this.#sequence.textContent = hit.toString();
 
     this.domNode.append(this.#sequence);
+
+    this.#spacer.classList.add(styles['spacer']);
+
+    this.domNode.append(this.#spacer);
 
     this.domNode.append(
       this.buttons['Select'].domNode,

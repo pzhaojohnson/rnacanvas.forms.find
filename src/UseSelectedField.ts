@@ -13,8 +13,8 @@ export class UseSelectedField {
 
     this.#field = new CheckboxField('Use selected bases', this.#checkbox.domNode);
 
-    this.domNode.style.marginTop = '4px';
-    this.domNode.style.marginLeft = '4px';
+    this.domNode.style.marginTop = '9px';
+    this.domNode.style.marginLeft = '9px';
   }
 
   get domNode() {

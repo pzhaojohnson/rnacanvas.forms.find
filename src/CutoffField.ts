@@ -15,7 +15,7 @@ export class CutoffField {
 
     this.#field = new NumberField('Cutoff', this.#input.domNode);
 
-    this.domNode.style.marginTop = '8px';
+    this.domNode.style.marginTop = '14px';
   }
 
   get domNode() {

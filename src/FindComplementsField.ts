@@ -14,6 +14,7 @@ export class FindComplementsField {
     this.#field = new CheckboxField('Find complements', this.#checkbox.domNode);
 
     this.domNode.style.marginTop = '10px';
+    this.domNode.style.marginLeft = '9px';
   }
 
   get domNode() {

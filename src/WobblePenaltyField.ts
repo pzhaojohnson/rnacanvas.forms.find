@@ -15,7 +15,7 @@ export class WobblePenaltyField {
 
     this.#field = new NumberField('Wobble penalty', this.#input.domNode);
 
-    this.domNode.style.marginTop = '4px';
+    this.domNode.style.marginTop = '9px';
   }
 
   get domNode() {

@@ -20,6 +20,8 @@ import { HitRow } from './HitRow';
 
 import { TextButton } from './TextButton';
 
+import { Tooltip } from '@rnacanvas/tooltips';
+
 export class HitsList {
   readonly #targetApp;
 
@@ -269,7 +271,9 @@ class SelectAllButton {
   readonly #button = new TextButton('Select All');
 
   constructor() {
-    this.domNode.style.marginRight = '8px';
+    this.#button.tooltip.textContent = 'Select all hits.';
+
+    this.domNode.style.marginRight = '9px';
   }
 
   get domNode() {
@@ -289,6 +293,8 @@ class AddAllToSelectedButton {
   readonly #button = new TextButton('⇧');
 
   constructor() {
+    this.#button.tooltip.textContent = 'Add all hits to selected.';
+
     this.domNode.style.marginRight = '8px';
   }
 
@@ -308,6 +314,8 @@ class AddAllToSelectedButton {
 class NextButton {
   readonly domNode = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
+  readonly #tooltip = new Tooltip('Next.');
+
   constructor() {
     this.domNode.setAttribute('viewBox', '0 0 6 10');
 
@@ -323,6 +331,8 @@ class NextButton {
     `;
 
     this.domNode.classList.add(styles['next-button']);
+
+    this.#tooltip.owner = this.domNode;
   }
 
   get onClick() {
@@ -336,6 +346,8 @@ class NextButton {
 
 class PreviousButton {
   readonly domNode = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+  readonly #tooltip = new Tooltip('Previous.');
 
   constructor() {
     this.domNode.setAttribute('viewBox', '0 0 6 10');
@@ -352,6 +364,8 @@ class PreviousButton {
     `;
 
     this.domNode.classList.add(styles['previous-button']);
+
+    this.#tooltip.owner = this.domNode;
   }
 
   get onClick() {

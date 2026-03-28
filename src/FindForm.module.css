@@ -1,6 +1,6 @@
 .find-form {
-  width: 312px;
-  height: 524px;
+  width: 314px;
+  height: 530px;
 
   overflow: auto;
 
@@ -8,19 +8,13 @@
 
   border: 1px solid #cacae4;
 
-  padding: 23px 16px 50px 36px;
+  padding: 23px 16px 51px 36px;
 
   background-color: rgba(0, 0, 0, 0.88);
 }
 
 .content-container {
-  margin: 27px 0px 0px 24px;
-
-  /**
-   * Make large enough to help avoid unwanted vertical scrollbar movement
-   * when motifs / complements are found and unfound.
-   */
-  min-height: 2200px;
+  margin: 26px 0px 0px 25px;
 
   display: flex;
   flex-direction: column;

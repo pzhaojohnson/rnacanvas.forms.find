@@ -9,13 +9,16 @@ export class MotifField {
 
   readonly #input = new TextInput();
 
+  readonly #iupacCodesNote = new IUPACCodesNote();
+
   onChange?: () => void;
 
   constructor() {
     this.domNode.classList.add(styles['motif-field']);
 
     this.#label.classList.add(styles['label']);
-    this.#label.textContent = 'Motif:'
+
+    this.#label.textContent = 'Motif *:';
 
     this.domNode.append(this.#label);
 
@@ -29,6 +32,8 @@ export class MotifField {
     };
 
     this.domNode.append(this.#input.domNode);
+
+    this.domNode.append(this.#iupacCodesNote.domNode);
   }
 
   get value(): string {
@@ -47,5 +52,24 @@ export class MotifField {
 
   enable(): void {
     this.#input.enable();
+  }
+}
+
+class IUPACCodesNote {
+  readonly domNode = document.createElement('p');
+
+  readonly #link = document.createElement('a');
+
+  constructor() {
+    this.domNode.classList.add(styles['iupac-codes-note']);
+
+    this.#link.classList.add(styles['iupac-codes-link']);
+
+    this.#link.href = 'https://www.bioinformatics.org/sms/iupac.html';
+    this.#link.target = '_blank';
+
+    this.#link.textContent = 'IUPAC codes';
+
+    this.domNode.append('* ', this.#link, ' are recognized.');
   }
 }

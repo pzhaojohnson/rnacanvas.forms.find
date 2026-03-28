@@ -17,3 +17,33 @@
 
   pointer-events: none;
 }
+
+.iupac-codes-note {
+  margin: 8px 0px 0px 8px;
+  padding: 0px;
+
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  font-style: normal;
+  color: white;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  pointer-events: none;
+}
+
+.iupac-codes-link {
+  color: cyan;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  pointer-events: auto;
+}
+
+.iupac-codes-link:hover {
+  text-decoration: underline;
+}

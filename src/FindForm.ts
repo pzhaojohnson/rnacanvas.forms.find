@@ -109,6 +109,15 @@ export class FindForm {
     // option fields are shown by default
     this.#optionFieldsToggle.caret.pointDown();
 
+    [
+      this.#cutoffField,
+      this.#mismatchPenaltyField,
+      this.#gapPenaltyField,
+      this.#wobblePenaltyField,
+    ].forEach(field => {
+      field.onSubmit = () => this.refresh();
+    });
+
     this.#optionFieldsContainer.style.margin = '8px 0px 0px 8px';
 
     this.#optionFieldsContainer.append(

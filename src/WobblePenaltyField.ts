@@ -32,6 +32,14 @@ export class WobblePenaltyField {
     return this.#field.value;
   }
 
+  get onSubmit() {
+    return this.#input.onSubmit;
+  }
+
+  set onSubmit(onSubmit) {
+    this.#input.onSubmit = onSubmit;
+  }
+
   hide(): void {
     this.domNode.style.display = 'none';
   }

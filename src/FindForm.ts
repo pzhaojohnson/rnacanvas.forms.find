@@ -48,13 +48,13 @@ export class FindForm {
   readonly #findComplementsField = new FindComplementsField();
 
   readonly #optionFieldsToggle = new SectionToggle('Options', () => {
-    this.#optionFieldsContainer.style.display = (
-      this.#optionFieldsContainer.style.display == 'none' ? (
-        ''
-      ) : (
-        'none'
-      )
-    );
+    if (this.#optionFieldsContainer.style.display == 'none') {
+      this.#optionFieldsContainer.style.display = '';
+      this.#optionFieldsToggle.caret.pointDown();
+    } else {
+      this.#optionFieldsContainer.style.display = 'none';
+      this.#optionFieldsToggle.caret.pointRight();
+    }
   });
 
   readonly #optionFieldsContainer = document.createElement('div');

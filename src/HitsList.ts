@@ -31,8 +31,6 @@ export class HitsList {
 
   readonly #rowsContainer = document.createElement('div');
 
-  readonly #noHitsMessage = new NoHitsMessage();
-
   #hits: Hit[] = [];
 
   #highlightedHit?: Hit;
@@ -91,17 +89,13 @@ export class HitsList {
   }
 
   refresh(): void {
+    this.#header.numHitsP.setNum(this.#hits.length);
+
     this.#hits.length == 0 ? this.#header.collapse() : this.#header.expand();
 
     // remove all prior rows
     this.#rows = [];
     this.#rowsContainer.innerHTML = '';
-
-    if (this.#hits.length == 0) {
-      this.#rowsContainer.append(this.#noHitsMessage.domNode);
-    } else {
-      this.#noHitsMessage.domNode.remove();
-    }
 
     this.#rows = this.#hits.map(hit => {
       let row = new HitRow(hit);
@@ -210,7 +204,10 @@ export class HitsList {
 class Header {
   readonly domNode = document.createElement('div');
 
-  readonly #label = document.createElement('p');
+  /**
+   * Shows the number of hits.
+   */
+  readonly numHitsP = new NumHitsP();
 
   readonly #buttonsContainer = document.createElement('div');
 
@@ -224,10 +221,7 @@ class Header {
   constructor() {
     this.domNode.classList.add(styles['header']);
 
-    this.#label.classList.add(styles['header-label']);
-    this.#label.textContent = 'Hits:';
-
-    this.domNode.append(this.#label);
+    this.domNode.append(this.numHitsP.domNode);
 
     this.domNode.append(this.#buttonsContainer);
 
@@ -252,18 +246,26 @@ class Header {
   }
 }
 
-class NoHitsMessage {
+class NumHitsP {
   readonly domNode = document.createElement('p');
 
-  readonly #zero = document.createElement('span');
-
   constructor() {
-    this.domNode.classList.add(styles['no-hits-message']);
+    this.domNode.classList.add(styles['num-hits-p']);
 
-    this.#zero.style.fontWeight = '700';
-    this.#zero.textContent = '0';
+    // show zero by default
+    this.setNum(0);
+  }
 
-    this.domNode.append(this.#zero, ' hits.');
+  setNum(num: number): void {
+    this.domNode.textContent = `${num}` + (
+      num == 0 ? (
+        ' hits.'
+      ) : num == 1 ? (
+        ' hit:'
+      ) : (
+        ' hits:'
+      )
+    );
   }
 }
 

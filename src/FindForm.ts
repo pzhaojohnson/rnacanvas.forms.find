@@ -102,7 +102,7 @@ export class FindForm {
 
     this.#contentContainer.append(this.#findComplementsField.domNode);
 
-    this.#optionFieldsToggle.domNode.style.marginTop = '23px';
+    this.#optionFieldsToggle.domNode.style.marginTop = '33px';
 
     this.#contentContainer.append(this.#optionFieldsToggle.domNode);
 

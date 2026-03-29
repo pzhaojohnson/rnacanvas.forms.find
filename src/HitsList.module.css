@@ -1,5 +1,5 @@
 .hits-list {
-  margin-top: 26px;
+  margin-top: 29px;
 
   display: flex;
   flex-direction: column;
@@ -30,7 +30,7 @@
 }
 
 .header-buttons-container {
-  margin-left: 109px;
+  margin-left: 110px;
 
   display: flex;
   flex-direction: row;

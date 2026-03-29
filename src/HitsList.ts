@@ -223,6 +223,8 @@ class Header {
 
     this.domNode.append(this.numHitsP.domNode);
 
+    this.#buttonsContainer.classList.add(styles['header-buttons-container']);
+
     this.domNode.append(this.#buttonsContainer);
 
     this.#buttonsContainer.append(

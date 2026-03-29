@@ -33,11 +33,11 @@ export class WobblePenaltyField {
   }
 
   hide(): void {
-    this.domNode.style.visibility = 'hidden';
+    this.domNode.style.display = 'none';
   }
 
   unhide(): void {
-    this.domNode.style.visibility = '';
+    this.domNode.style.display = '';
   }
 }
 

@@ -100,7 +100,7 @@ export class HitsList {
     this.#rows = this.#hits.map(hit => {
       let row = new HitRow(hit);
 
-      row.onClick = () => this.#highlight(hit);
+      row.onClick = () => this.#isHighlighted(hit) ? this.#dehighlight() : this.#highlight(hit);
 
       row.buttons['Select'].onClick = () => this.#select(hit);
 
@@ -112,9 +112,14 @@ export class HitsList {
     this.#rowsContainer.append(...this.#rows.map(row => row.domNode));
   }
 
+  #isHighlighted(hit: Hit): boolean {
+    return hit === this.#highlightedHit;
+  }
+
   #highlight(hit: Hit) {
     // remove any prior search highlighting
     this.#searchHighlighting?.remove();
+    this.#searchHighlighting = undefined;
 
     this.#searchHighlighting = this.#targetApp.addSearchHighlighting(hit);
 
@@ -129,6 +134,20 @@ export class HitsList {
 
     // highlight the row with the hit
     this.#rows.find(row => row.hit === hit)?.highlight();
+  }
+
+  /**
+   * Dehighlight the currently highlighted hit.
+   */
+  #dehighlight() {
+    this.#highlightedHit = undefined;
+
+    // dehighlight all rows
+    this.#rows.forEach(row => row.dehighlight());
+
+    // remove any search highlighting
+    this.#searchHighlighting?.remove();
+    this.#searchHighlighting = undefined;
   }
 
   #select(hit: Hit) {

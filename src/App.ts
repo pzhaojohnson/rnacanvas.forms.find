@@ -4,7 +4,7 @@ import type { LiveCollection } from './LiveCollection';
 
 import type { SearchHighlighting } from './SearchHighlighting';
 
-import type { Box } from '@rnacanvas/boxes';
+import type { Point } from './Point';
 
 /**
  * The app interface used by the Find form.
@@ -37,6 +37,9 @@ export interface App {
    * The user's view of the drawing.
    */
   readonly view: {
-    fitTo(box: Box): void;
+    /**
+     * Can be set to set the center point of the user's view of the drawing.
+     */
+    centerPoint: Point;
   }
 }

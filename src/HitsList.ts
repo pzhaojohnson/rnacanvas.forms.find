@@ -127,7 +127,7 @@ export class HitsList {
 
     let bbox = Box.bounding([...hit].map(b => b.domNode.getBBox()));
 
-    this.#targetApp.view.fitTo(bbox.padded(max([bbox.width, bbox.height]) / 2));
+    this.#targetApp.view.centerPoint = { x: bbox.centerX, y: bbox.centerY };
 
     // dehighlight any previously highlighted rows
     this.#rows.forEach(row => row.dehighlight());

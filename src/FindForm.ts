@@ -83,7 +83,10 @@ export class FindForm {
 
     this.#contentContainer.append(this.#motifField.domNode);
 
-    this.#motifField.onChange = () => this.refresh();
+    // only refresh when the Find form is open
+    this.#motifField.onChange = () => {
+      document.body.contains(this.domNode) ? this.refresh() : {};
+    };
 
     this.#contentContainer.append(this.#useSelectedField.domNode);
 

@@ -159,9 +159,12 @@ export class HitsList {
   }
 
   #selectAll() {
+    // cache hits before deselecting (in case hits are being shown according to which bases are currently selected)
+    let hits = [...this.#hits];
+
     this.#targetApp.deselect();
 
-    this.#hits.forEach(hit => this.#targetApp.addToSelected(hit));
+    hits.forEach(hit => this.#targetApp.addToSelected(hit));
   }
 
   #addAllToSelected() {

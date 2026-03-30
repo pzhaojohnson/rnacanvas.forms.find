@@ -66,11 +66,15 @@ export class FindForm {
 
   readonly #hitsList;
 
-  readonly #characterDataObserver = new MutationObserver(() => {
-    this.#isOpen() ? this.refresh() : {};
-  });
-
-  readonly #childListObserver = new MutationObserver(() => {
+  /**
+   * Refresh the find form whenever:
+   *   - The text contents of bases change.
+   *   - Bases are added or removed from the drawing.
+   *   - The ordering of bases changes.
+   *
+   * Changes to the ordering of bases are detected through the addition or removal of primary bonds from the drawing.
+   */
+  readonly #drawingObserver = new MutationObserver(() => {
     this.#isOpen() ? this.refresh() : {};
   });
 
@@ -108,12 +112,7 @@ export class FindForm {
       }
     });
 
-    // refresh the Find form whenever the text contents of bases change
-    this.#characterDataObserver.observe(targetApp.drawing.domNode, { characterData: true, subtree: true });
-
-    // refresh the Find form whenever bases are added or removed from the drawing or their order changes
-    // (changes to order are detected through the addition or removal of primary bonds from the drawing)
-    this.#childListObserver.observe(targetApp.drawing.domNode, { childList: true, subtree: true });
+    this.#drawingObserver.observe(targetApp.drawing.domNode, { childList: true, characterData: true, subtree: true });
 
     this.#contentContainer.append(this.#findComplementsField.domNode);
 

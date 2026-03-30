@@ -17,7 +17,7 @@ export class WobblePenaltyField {
     this.#input = new TextInput();
 
     // default value
-    this.#input.domNode.value = '-0.5';
+    this.#input.domNode.value = '0';
 
     this.#field = new NumberField('Wobble penalty *', this.#input.domNode);
 

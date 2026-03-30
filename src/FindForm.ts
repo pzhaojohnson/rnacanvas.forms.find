@@ -66,6 +66,14 @@ export class FindForm {
 
   readonly #hitsList;
 
+  readonly #characterDataObserver = new MutationObserver(() => {
+    this.#isOpen() ? this.refresh() : {};
+  });
+
+  readonly #childListObserver = new MutationObserver(() => {
+    this.#isOpen() ? this.refresh() : {};
+  });
+
   readonly #closeButton = new CloseButton();
 
   readonly #dragHandler;
@@ -83,10 +91,7 @@ export class FindForm {
 
     this.#contentContainer.append(this.#motifField.domNode);
 
-    // only refresh when the Find form is open
-    this.#motifField.onChange = () => {
-      document.body.contains(this.domNode) ? this.refresh() : {};
-    };
+    this.#motifField.onChange = () => this.#refreshHits();
 
     this.#contentContainer.append(this.#useSelectedField.domNode);
 
@@ -98,10 +103,17 @@ export class FindForm {
     };
 
     targetApp.selectedBases.addEventListener('change', () => {
-      if (this.#useSelectedField.isChecked()) {
+      if (this.#isOpen() && this.#useSelectedField.isChecked()) {
         this.#motifField.value = this.#selectedMotif;
       }
     });
+
+    // refresh the Find form whenever the text contents of bases change
+    this.#characterDataObserver.observe(targetApp.drawing.domNode, { characterData: true, subtree: true });
+
+    // refresh the Find form whenever bases are added or removed from the drawing or their order changes
+    // (changes to order are detected through the addition or removal of primary bonds from the drawing)
+    this.#childListObserver.observe(targetApp.drawing.domNode, { childList: true, subtree: true });
 
     this.#contentContainer.append(this.#findComplementsField.domNode);
 
@@ -118,7 +130,7 @@ export class FindForm {
       this.#gapPenaltyField,
       this.#wobblePenaltyField,
     ].forEach(field => {
-      field.onSubmit = () => this.refresh();
+      field.onSubmit = () => this.#refreshHits();
     });
 
     this.#optionFieldsContainer.style.margin = '8px 0px 0px 8px';
@@ -153,6 +165,14 @@ export class FindForm {
     this.#dragHandler = new DragHandler(this.domNode);
   }
 
+  #isOpen(): boolean {
+    return document.body.contains(this.domNode);
+  }
+
+  #isClosed(): boolean {
+    return !this.#isOpen();
+  }
+
   /**
    * The motif formed by the selected bases.
    */
@@ -165,6 +185,20 @@ export class FindForm {
   }
 
   refresh(): void {
+    let currentMotif = this.#motifField.value;
+
+    // trigger change callbacks to be called
+    this.#motifField.value = '';
+
+    // trigger hits list (and/or selected motif) to be refreshed
+    if (this.#useSelectedField.isChecked()) {
+      this.#motifField.value = this.#selectedMotif;
+    } else {
+      this.#motifField.value = currentMotif;
+    }
+  }
+
+  #refreshHits() {
     let motif = this.#motifField.value;
 
     let parentSequence = [...this.#targetApp.drawing.bases].map(b => ({

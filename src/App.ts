@@ -11,6 +11,8 @@ import type { Point } from './Point';
  */
 export interface App {
   readonly drawing: {
+    readonly domNode: SVGSVGElement;
+
     readonly bases: Iterable<Nucleobase>;
   }
 

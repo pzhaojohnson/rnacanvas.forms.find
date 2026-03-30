@@ -11,6 +11,10 @@
   cursor: pointer;
 }
 
+.hit-row:hover {
+  background-color: #3a3a40;
+}
+
 .position {
   margin: 0px 8px 0px 0px;
   padding: 0px;
@@ -78,5 +82,9 @@
 }
 
 .highlighted {
-  background-color: #52525e;
+  background-color: #46464f;
+}
+
+.highlighted:hover {
+  background-color: #46464f;
 }

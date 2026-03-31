@@ -25,6 +25,9 @@ export class WobblePenaltyField {
 
     this.domNode.append(this.#wobblePenaltyNote.domNode);
 
+    this.#input.domNode.addEventListener('focus', () => this.#wobblePenaltyNote.domNode.style.color = 'yellow');
+    this.#input.domNode.addEventListener('blur', () => this.#wobblePenaltyNote.domNode.style.color = '');
+
     this.domNode.style.marginTop = '9px';
   }
 

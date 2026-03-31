@@ -34,6 +34,9 @@ export class MotifField {
     this.domNode.append(this.#input.domNode);
 
     this.domNode.append(this.#iupacCodesNote.domNode);
+
+    this.#input.domNode.addEventListener('focus', () => this.#iupacCodesNote.domNode.style.color = 'yellow');
+    this.#input.domNode.addEventListener('blur', () => this.#iupacCodesNote.domNode.style.color = '');
   }
 
   get value(): string {

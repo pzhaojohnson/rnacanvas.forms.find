@@ -153,6 +153,13 @@ export class FindForm {
       this.#refreshHits();
     };
 
+    // decide whether to show the wobble penalty field initially (when first opening the Find form)
+    if (this.#findComplementsField.isChecked()) {
+      this.#wobblePenaltyField.unhide();
+    } else {
+      this.#wobblePenaltyField.hide();
+    }
+
     this.#hitsList = new HitsList(targetApp);
 
     this.#contentContainer.append(this.#hitsList.domNode);

@@ -116,8 +116,6 @@ export class FindForm {
 
     this.#contentContainer.append(this.#findComplementsField.domNode);
 
-    this.#findComplementsField.onChange = () => this.#refreshHits();
-
     this.#optionFieldsToggle.domNode.style.marginTop = '33px';
 
     this.#contentContainer.append(this.#optionFieldsToggle.domNode);
@@ -151,6 +149,8 @@ export class FindForm {
       } else {
         this.#wobblePenaltyField.hide();
       }
+
+      this.#refreshHits();
     };
 
     this.#hitsList = new HitsList(targetApp);

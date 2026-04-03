@@ -1,8 +1,8 @@
 import * as styles from './WobblePenaltyField.module.css';
 
-import { NumberField } from './NumberField';
+import { NumberInput } from './NumberInput';
 
-import { TextInput } from './TextInput';
+import { TextField } from './TextField';
 
 export class WobblePenaltyField {
   readonly domNode = document.createElement('div');
@@ -14,12 +14,12 @@ export class WobblePenaltyField {
   readonly #wobblePenaltyNote = new WobblePenaltyNote();
 
   constructor() {
-    this.#input = new TextInput();
+    this.#input = new NumberInput();
 
     // default value
     this.#input.domNode.value = '0';
 
-    this.#field = new NumberField('Wobble penalty *', this.#input.domNode);
+    this.#field = new TextField('Wobble penalty *', this.#input.domNode);
 
     this.domNode.append(this.#field.domNode);
 
@@ -32,7 +32,7 @@ export class WobblePenaltyField {
   }
 
   get value() {
-    return this.#field.value;
+    return this.#input.value;
   }
 
   get onSubmit() {

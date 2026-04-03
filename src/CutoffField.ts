@@ -1,6 +1,6 @@
-import { NumberField } from './NumberField';
+import { NumberInput } from './NumberInput';
 
-import { TextInput } from './TextInput';
+import { TextField } from './TextField';
 
 export class CutoffField {
   readonly #input;
@@ -13,12 +13,12 @@ export class CutoffField {
   #onSubmit?: () => void;
 
   constructor() {
-    this.#input = new TextInput();
+    this.#input = new NumberInput();
 
     // default value
     this.value = 0.9;
 
-    this.#field = new NumberField('Cutoff', this.#input.domNode);
+    this.#field = new TextField('Cutoff', this.#input.domNode);
 
     this.domNode.style.marginTop = '0px';
 
@@ -31,7 +31,7 @@ export class CutoffField {
   }
 
   get value() {
-    return this.#field.value / 100;
+    return this.#input.value / 100;
   }
 
   set value(value) {

@@ -1,6 +1,6 @@
-import { NumberField } from './NumberField';
+import { NumberInput } from './NumberInput';
 
-import { TextInput } from './TextInput';
+import { TextField } from './TextField';
 
 export class MismatchPenaltyField {
   readonly #input;
@@ -8,12 +8,12 @@ export class MismatchPenaltyField {
   readonly #field;
 
   constructor() {
-    this.#input = new TextInput();
+    this.#input = new NumberInput();
 
     // default value
     this.#input.domNode.value = '-1';
 
-    this.#field = new NumberField('Mismatch penalty', this.#input.domNode);
+    this.#field = new TextField('Mismatch penalty', this.#input.domNode);
 
     this.domNode.style.marginTop = '9px';
   }
@@ -23,7 +23,7 @@ export class MismatchPenaltyField {
   }
 
   get value() {
-    return this.#field.value;
+    return this.#input.value;
   }
 
   get onSubmit() {

@@ -1,6 +1,6 @@
-import { NumberField } from './NumberField';
+import { NumberInput } from './NumberInput';
 
-import { TextInput } from './TextInput';
+import { TextField } from './TextField';
 
 export class GapPenaltyField {
   readonly #input;
@@ -8,12 +8,12 @@ export class GapPenaltyField {
   readonly #field;
 
   constructor() {
-    this.#input = new TextInput();
+    this.#input = new NumberInput();
 
     // default value
     this.#input.domNode.value = '-1.5';
 
-    this.#field = new NumberField('Gap penalty', this.#input.domNode);
+    this.#field = new TextField('Gap penalty', this.#input.domNode);
 
     this.domNode.style.marginTop = '9px';
   }
@@ -23,7 +23,7 @@ export class GapPenaltyField {
   }
 
   get value() {
-    return this.#field.value;
+    return this.#input.value;
   }
 
   get onSubmit() {

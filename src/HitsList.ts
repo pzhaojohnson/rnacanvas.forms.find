@@ -340,7 +340,7 @@ class AddAllToSelectedButton {
 class NextButton {
   readonly domNode = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
-  readonly #tooltip = new Tooltip('Next.');
+  readonly #tooltip = new Tooltip('Next hit.');
 
   constructor() {
     this.domNode.setAttribute('viewBox', '0 0 6 10');
@@ -373,7 +373,7 @@ class NextButton {
 class PreviousButton {
   readonly domNode = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
-  readonly #tooltip = new Tooltip('Previous.');
+  readonly #tooltip = new Tooltip('Previous hit.');
 
   constructor() {
     this.domNode.setAttribute('viewBox', '0 0 6 10');

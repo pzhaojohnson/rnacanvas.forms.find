@@ -38,7 +38,7 @@ export class CutoffField {
     let percentage = 100 * value;
 
     if (Number.isFinite(percentage)) {
-      this.#input.domNode.value = `${percentage.toPrecision(2)}%`;
+      this.#input.domNode.value = `${percentage.toFixed(0)}%`;
     } else {
       this.#input.domNode.value = `${percentage}`;
     }

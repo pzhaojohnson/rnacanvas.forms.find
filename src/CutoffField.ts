@@ -55,6 +55,7 @@ export class CutoffField {
       // format displayed value
       this.value = this.value;
 
+      // call user-defined callback on submit
       onSubmit ? onSubmit() : {};
     };
   }

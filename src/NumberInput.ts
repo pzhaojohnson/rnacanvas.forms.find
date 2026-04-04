@@ -35,6 +35,7 @@ export class NumberInput {
       // show parsed value
       this.#input.domNode.value = `${this.value}`;
 
+      // call user-defined callback on submit
       onSubmit ? onSubmit() : {};
     };
   }

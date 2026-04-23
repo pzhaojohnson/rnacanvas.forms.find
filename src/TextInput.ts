@@ -20,6 +20,9 @@ export class TextInput {
         this.domNode.blur();
       }
     });
+
+    // prevent unintentional propagation of paste events up the app DOM tree
+    this.domNode.addEventListener('paste', event => event.stopPropagation());
   }
 
   get onChange() {

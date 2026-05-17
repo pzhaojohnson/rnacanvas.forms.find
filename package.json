@@ -1,6 +1,6 @@
 {
   "name": "@rnacanvas/forms.find",
-  "version": "3.2.5",
+  "version": "4.0.0",
   "description": "The Find form",
   "repository": {
     "type": "git",
@@ -12,7 +12,7 @@
     "build": "webpack"
   },
   "author": "pzhaojohnson",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "devDependencies": {
     "@babel/core": "^7.23.7",
     "@babel/preset-env": "^7.23.7",

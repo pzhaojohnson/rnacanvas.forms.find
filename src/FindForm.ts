@@ -233,6 +233,13 @@ export class FindForm {
   }
 
   /**
+   * Undoes any dragging of the Find form by the user.
+   */
+  reposition(): void {
+    this.#dragHandler.untranslate();
+  }
+
+  /**
    * Removes the form from the document body.
    */
   close(): void {

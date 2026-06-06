@@ -1,11 +1,12 @@
 .hits-list {
-  margin-top: 29px;
+  margin-top: 33px;
 
   display: flex;
   flex-direction: column;
 }
 
 .header {
+  margin-top: 14px;
   margin-bottom: 9px;
 
   display: flex;
@@ -75,11 +76,4 @@
 
 .previous-button:active {
   background-color: #676776;
-}
-
-.rows-container {
-  margin: 8px 0px 0px 8px;
-
-  display: flex;
-  flex-direction: column;
 }

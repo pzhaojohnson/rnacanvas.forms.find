@@ -30,7 +30,7 @@ import { HitsList } from './HitsList';
 
 import { CloseButton } from './CloseButton';
 
-import { DragTranslater as DragHandler } from '@rnacanvas/forms';
+import { DragHandler } from '@rnacanvas/forms';
 
 export class FindForm {
   readonly #targetApp;
@@ -195,10 +195,10 @@ export class FindForm {
   refresh(): void {
     let currentMotif = this.#motifField.value;
 
-    // trigger change callbacks to be called
-    this.#motifField.value = '';
+    // do this to ensure that the value of the motif field is modified (and change callbacks are triggered)
+    this.#motifField.value = currentMotif + '_';
 
-    // trigger hits list (and/or selected motif) to be refreshed
+    // update the motif field (if the Use-selected field is checked) and trigger the hits list to be refreshed
     if (this.#useSelectedField.isChecked()) {
       this.#motifField.value = this.#selectedMotif;
     } else {

@@ -12,9 +12,9 @@ import { first, last } from '@rnacanvas/utilities';
 
 import { Box } from '@rnacanvas/boxes';
 
-import { max } from '@rnacanvas/math';
-
 import * as styles from './HitsList.module.css';
+
+import { HighlightAutomaticallyField } from './HighlightAutomaticallyField';
 
 import { HitRow } from './HitRow';
 
@@ -27,17 +27,15 @@ export class HitsList {
 
   readonly domNode = document.createElement('div');
 
+  readonly #highlightAutomaticallyField = new HighlightAutomaticallyField();
+
   readonly #header = new Header();
 
-  readonly #rowsContainer = document.createElement('div');
+  readonly #rowsContainer;
 
-  #hits: Hit[] = [];
+  #searchHighlightings = new Map<Hit, SearchHighlighting>();
 
-  #highlightedHit?: Hit;
-
-  #searchHighlighting?: SearchHighlighting;
-
-  #rows: HitRow[] = [];
+  #focusedHit?: Hit;
 
   readonly #formRemovalObserver;
 
@@ -48,6 +46,8 @@ export class HitsList {
 
     this.domNode.classList.add(styles['hits-list']);
 
+    this.domNode.append(this.#highlightAutomaticallyField.domNode);
+
     this.domNode.append(this.#header.domNode);
 
     this.#header.buttons['Select All'].onClick = () => this.#selectAll();
@@ -57,7 +57,9 @@ export class HitsList {
     this.#header.buttons['Next'].onClick = () => this.#next();
     this.#header.buttons['Previous'].onClick = () => this.#previous();
 
-    this.domNode.append(this.#rowsContainer);
+    this.#rowsContainer = new RowsContainer(targetApp);
+
+    this.domNode.append(this.#rowsContainer.domNode);
 
     // for when the Find form is opened or closed
     this.#formRemovalObserver = new MutationObserver(() => {
@@ -74,93 +76,50 @@ export class HitsList {
   }
 
   get hits() {
-    return this.#hits;
+    return this.#rowsContainer.hits;
   }
 
   set hits(hits) {
-    this.#hits = hits;
+    // changing the hits list will recreate rows
+    // (only recreate rows when the hits list changes to avoid unnecessary scrollbar movement)
+    this.#rowsContainer.hits = hits;
 
-    // remove any prior search highlighting
-    this.#searchHighlighting?.remove();
+    this.#rowsContainer.rows.forEach(row => {
+      row.domNode.addEventListener('click', () => this.#isFocused(row.hit) ? this.#blur() : this.#focus(row.hit));
+    });
 
-    this.#highlightedHit = undefined;
+    this.#focusedHit = undefined;
 
     this.refresh();
   }
 
-  refresh(): void {
-    this.#header.numHitsP.setNum(this.#hits.length);
-
-    this.#hits.length == 0 ? this.#header.collapse() : this.#header.expand();
-
-    // remove all prior rows
-    this.#rows = [];
-    this.#rowsContainer.innerHTML = '';
-
-    this.#rows = this.#hits.map(hit => {
-      let row = new HitRow(hit);
-
-      row.onClick = () => this.#isHighlighted(hit) ? this.#dehighlight() : this.#highlight(hit);
-
-      row.buttons['Select'].onClick = () => this.#select(hit);
-
-      row.buttons['Add to Selected'].onClick = () => this.#addToSelected(hit);
-
-      return row;
-    });
-
-    this.#rowsContainer.append(...this.#rows.map(row => row.domNode));
+  #isFocused(hit: Hit): boolean {
+    return hit == this.#focusedHit;
   }
 
-  #isHighlighted(hit: Hit): boolean {
-    return hit === this.#highlightedHit;
-  }
+  #focus(hit: Hit): void {
+    this.#focusedHit = hit;
 
-  #highlight(hit: Hit) {
-    // remove any prior search highlighting
-    this.#searchHighlighting?.remove();
-    this.#searchHighlighting = undefined;
-
-    this.#searchHighlighting = this.#targetApp.addSearchHighlighting(hit);
-
-    this.#highlightedHit = hit;
+    this.refresh();
 
     let bbox = Box.bounding([...hit].map(b => b.domNode.getBBox()));
 
+    // center the user's view on the hit-to-focus
     this.#targetApp.view.centerPoint = { x: bbox.centerX, y: bbox.centerY };
-
-    // dehighlight any previously highlighted rows
-    this.#rows.forEach(row => row.dehighlight());
-
-    // highlight the row with the hit
-    this.#rows.find(row => row.hit === hit)?.highlight();
   }
 
   /**
-   * Dehighlight the currently highlighted hit.
+   * Unfocus the currently focused hit.
    */
-  #dehighlight() {
-    this.#highlightedHit = undefined;
+  #blur() {
+    this.#focusedHit = undefined;
 
-    // dehighlight all rows
-    this.#rows.forEach(row => row.dehighlight());
-
-    // remove any search highlighting
-    this.#searchHighlighting?.remove();
-    this.#searchHighlighting = undefined;
-  }
-
-  #select(hit: Hit) {
-    this.#targetApp.select(hit);
-  }
-
-  #addToSelected(hit: Hit) {
-    this.#targetApp.addToSelected(hit);
+    this.refresh();
   }
 
   #selectAll() {
-    // cache hits before deselecting (in case hits are being shown according to which bases are currently selected)
-    let hits = [...this.#hits];
+    // cache hits before deselecting (since the hits list might change after changing the current selection)
+    let hits = [...this.hits];
 
     this.#targetApp.deselect();
 
@@ -168,42 +127,42 @@ export class HitsList {
   }
 
   #addAllToSelected() {
-    this.#hits.forEach(hit => this.#targetApp.addToSelected(hit));
+    // use spread operator (since the hits list might change as hits are added to the current selection if the Use-selected field is checked)
+    [...this.hits].forEach(hit => this.#targetApp.addToSelected(hit));
   }
 
   #next() {
-    if (this.#hits.length == 0) {
+    if (this.hits.length == 0) {
       // nothing to do
       return;
     }
 
-    if (!this.#highlightedHit) {
-      this.#highlight(first(this.#hits));
+    if (!this.#focusedHit) {
+      this.#focus(first(this.hits));
     } else {
-      this.#highlight(next(this.#highlightedHit, this.#hits));
+      this.#focus(next(this.#focusedHit, this.hits));
     }
   }
 
   #previous() {
-    if (this.#hits.length == 0) {
+    if (this.hits.length == 0) {
       // nothing to do
       return;
     }
 
-    if (!this.#highlightedHit) {
-      this.#highlight(last(this.#hits));
+    if (!this.#focusedHit) {
+      this.#focus(last(this.hits));
     } else {
-      this.#highlight(previous(this.#highlightedHit, this.#hits));
+      this.#focus(previous(this.#focusedHit, this.hits));
     }
-
   }
 
   /**
    * Handle closing of the Find form.
    */
   #handleClose() {
-    // hide any search highlighting currently being shown
-    this.#searchHighlighting?.remove();
+    // hide any search highlightings currently being shown
+    this.#dehighlightAll();
 
     this.#wasOpen = false;
   }
@@ -212,14 +171,67 @@ export class HitsList {
    * Handle opening of the Find form.
    */
   #handleOpen() {
-    if (this.#highlightedHit) {
-      // remove any prior search highlighting
-      this.#searchHighlighting?.remove();
-
-      this.#searchHighlighting = this.#targetApp.addSearchHighlighting(this.#highlightedHit);
-    }
+    this.refresh();
 
     this.#wasOpen = true;
+  }
+
+  refresh(): void {
+    this.#header.numHitsP.setNum(this.hits.length);
+
+    // highlight the row for the focused hit (if present) and dehighlight all other rows
+    this.#rowsContainer.rows.forEach(row => {
+      this.#isFocused(row.hit) ? row.highlight() : row.dehighlight();
+    });
+
+    let hits = new Set(this.hits);
+
+    // remove any lingering search highlightings
+    // (use spread operator to avoid iterating over the highlightings map while modifying it)
+    [...this.#searchHighlightings]
+      .filter(([hit, _]) => !hits.has(hit))
+      .forEach(([hit, _]) => this.#dehighlight(hit));
+
+    // make sure every hit is highlighted (if the Highlight-automatically field is checked)
+    if (this.#highlightAutomaticallyField.isChecked()) {
+      this.hits.forEach(hit => !this.#isHighlighted(hit) ? this.#highlight(hit) : {});
+    }
+
+    // just highlight the focused hit (if the Highlight-automatically field is not checked)
+    if (!this.#highlightAutomaticallyField.isChecked()) {
+      if (this.#focusedHit) {
+        !this.#isHighlighted(this.#focusedHit) ? this.#highlight(this.#focusedHit) : {};
+      }
+    }
+  }
+
+  #isHighlighted(hit: Hit): boolean {
+    return this.#searchHighlightings.has(hit);
+  }
+
+  #highlight(hit: Hit) {
+    // don't add duplicate highlightings
+    if (this.#isHighlighted(hit)) {
+      return;
+    }
+
+    let searchHighlighting = this.#targetApp.addSearchHighlighting(hit);
+
+    this.#searchHighlightings.set(hit, searchHighlighting);
+  }
+
+  #dehighlight(hit: Hit) {
+    this.#searchHighlightings.get(hit)?.remove();
+
+    this.#searchHighlightings.delete(hit);
+  }
+
+  /**
+   * Removes all search highlightings.
+   */
+  #dehighlightAll() {
+    // use spread operator to avoid modifying the highlightings map while iterating over it
+    [...this.#searchHighlightings].forEach(([hit, _]) => this.#dehighlight(hit));
   }
 }
 
@@ -229,7 +241,7 @@ class Header {
   /**
    * Shows the number of hits.
    */
-  readonly numHitsP = new NumHitsP();
+  readonly #numHitsP = new NumHitsP();
 
   readonly #buttonsContainer = document.createElement('div');
 
@@ -243,7 +255,7 @@ class Header {
   constructor() {
     this.domNode.classList.add(styles['header']);
 
-    this.domNode.append(this.numHitsP.domNode);
+    this.domNode.append(this.#numHitsP.domNode);
 
     this.#buttonsContainer.classList.add(styles['header-buttons-container']);
 
@@ -255,6 +267,16 @@ class Header {
       this.buttons['Next'].domNode,
       this.buttons['Previous'].domNode,
     );
+  }
+
+  get numHitsP() {
+    return {
+      setNum: (num: number) => {
+        this.#numHitsP.setNum(num);
+
+        num == 0 ? this.collapse() : this.expand();
+      },
+    };
   }
 
   isCollapsed(): boolean {
@@ -400,5 +422,44 @@ class PreviousButton {
 
   set onClick(onClick) {
     this.domNode.onclick = onClick;
+  }
+}
+
+class RowsContainer {
+  readonly #targetApp;
+
+  readonly domNode = document.createElement('div');
+
+  #hits: Hit[] = [];
+
+  rows: HitRow[] = [];
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+  }
+
+  get hits() {
+    return this.#hits;
+  }
+
+  set hits(hits) {
+    this.#hits = hits;
+
+    // remove all prior rows
+    this.rows = [];
+    this.domNode.innerHTML = '';
+
+    // recreate rows when the hits list changes
+    this.rows = this.#hits.map(hit => {
+      let row = new HitRow(hit);
+
+      row.buttons['Select'].onClick = () => this.#targetApp.select(hit);
+
+      row.buttons['Add to Selected'].onClick = () => this.#targetApp.addToSelected(hit);
+
+      return row;
+    });
+
+    this.domNode.append(...this.rows.map(row => row.domNode));
   }
 }

@@ -8,4 +8,16 @@ export class Checkbox {
 
     this.domNode.classList.add(styles['checkbox']);
   }
+
+  isChecked(): boolean {
+    return this.domNode.checked;
+  }
+
+  check(): void {
+    this.domNode.checked = true;
+  }
+
+  uncheck(): void {
+    this.domNode.checked = false;
+  }
 }

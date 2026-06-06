@@ -48,6 +48,8 @@ export class HitsList {
 
     this.domNode.append(this.#highlightAutomaticallyField.domNode);
 
+    this.#highlightAutomaticallyField.onChange = () => this.refresh();
+
     this.domNode.append(this.#header.domNode);
 
     this.#header.buttons['Select All'].onClick = () => this.#selectAll();

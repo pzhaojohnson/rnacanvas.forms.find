@@ -14,7 +14,6 @@ export class HighlightAutomaticallyField {
     this.#field = new CheckboxField('Highlight automatically', this.#checkbox.domNode);
 
     this.domNode.style.marginTop = '9px';
-    this.domNode.style.marginLeft = '9px';
 
     this.domNode.style.alignSelf = 'start';
   }

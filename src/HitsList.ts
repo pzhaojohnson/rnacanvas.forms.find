@@ -188,7 +188,7 @@ export class HitsList {
 
     let hits = new Set(this.hits);
 
-    // remove any lingering search highlightings
+    // remove any search highlightings for hits that are no longer in the list
     // (use spread operator to avoid iterating over the highlightings map while modifying it)
     [...this.#searchHighlightings]
       .filter(([hit, _]) => !hits.has(hit))
@@ -204,6 +204,8 @@ export class HitsList {
       if (this.#focusedHit) {
         !this.#isHighlighted(this.#focusedHit) ? this.#highlight(this.#focusedHit) : {};
       }
+
+      this.hits.forEach(hit => !this.#isFocused(hit) ? this.#dehighlight(hit) : {});
     }
   }
 
